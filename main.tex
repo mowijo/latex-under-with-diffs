@@ -1,0 +1,326 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONSs
+%----------------------------------------------------------------------------------------
+
+\documentclass[10pt, a4paper]{article} % 10pt font size (11 and 12 also possible), A4 paper (letterpaper for US letter) and two column layout (remove for one column)
+\usepackage[super]{nth}
+\usepackage{svg}
+\usepackage{dot2texi}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{url}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+
+\input{structure.tex}
+
+\ifdefined\code
+\else
+\newcommand{\code}[1]{\texttt{#1}}
+\fi
+
+\ifdefined\filename
+\else
+\newcommand{\filename}[1]{\texttt{#1}}
+\fi
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{\LaTeX \enspace Documents Under Revision Control} 
+
+ \author{
+ 	\authorstyle{Morten Winkler Jørgensen\textsuperscript{1}} % Authors
+ 	\newline\newline % Space before institutions
+ 	\textsuperscript{1}\institution{SGRE OF TE}\\ 
+ }
+
+\newcommand\revision{1}
+%RedefineRevision
+
+\date{ Revision \revision, \today} 
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title
+
+\thispagestyle{firstpage} % Apply the page style for the first page (no headers and footers)
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\lettrineabstract{When having your documents under revision control, something interesting suddenly becomes possible. Using the right tools in the right ways, you can suddenly create all revisions of your document from source and have changes, be it additions of deletions, marked with text decorations and colours. This allows you to keep the history of your document transparent and very easy to maintain. \\ \\ This document serves as both an example as well as documentation.}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\section{Reading guide}
+This document is intended for people who need to write documents that has their history tracked and is comfortable with GNU make and the command line. A certain degree of programmin understanding is required.
+
+This document has it's changes tracked. The changes between the different revisions are listed in section \ref{sec:document-history}.
+
+%change_description_here
+
+\section{A Quick Overview}
+
+The general workflow when using this project is illustrated in figure \ref{fig:general-workflow}.
+
+\begin{figure*}
+\centering
+	\includegraphics[width=6cm]{graph.gv.pdf} 
+	\caption{General Workflow} 
+	\label{fig:general-workflow}
+\end{figure*}
+
+Changes are introduced, files are added to the Makefile and changes are committed. Eventually, the document is ready for release, and PDF files are generated and published. A full release creates two PDF files for reach revision:
+\begin{itemize}
+	\item A PDF containing the current document.
+	\item A PDF containing the current document with changes from the previous revision marked.
+\end{itemize}
+
+An exception to this is the first revision, as it has no previous version to compare changes to. 
+
+
+\section{Using Git}
+
+As earwax makes your ear canal stick together, git is what makes all the parts stick together here, so in the voice of Albus Dumbledore : "Alas! Git!" \footnote{Albus Dumblefode said: "Alas! Earwax!" \citep{HarryPotter1}.}
+
+Of course you can use any revision tool you like to obtain what is described in this document, but this partcular project uses git. There is a single important thing to remember: Tag your releases and tag your releases only! A  should only list your releases, or revisions, of the document. A \code{git tag -l} should only list the releases. Of course this can be changed in the suporting scripts, but that is how the tools work right now.
+
+\section{Using \texttt{Make} }
+
+\begin{lstlisting}[language=make, caption={Indlucind a PDF as a figure}, label=lst:include-pdf-as-figure]
+SOURCE_TEX        = main.tex
+GNUPLOTS          = parabellum.gnuplot.pdf
+GRAPHVIZ_GRAPHS   = graph.gv.pdf
+\end{lstlisting}
+
+\section{Fill}
+
+Next, follows some sections with Lorem ipsum to show a larger document.
+
+Donec nec nibh sagittis, finibus mauris quis, laoreet augue. Maecenas aliquam sem nunc, vel semper urna hendrerit nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas pellentesque dolor lacus, sit amet pretium felis vestibulum finibus. Duis tincidunt sapien faucibus nisi vehicula tincidunt. Donec euismod suscipit ligula a tempor. Aenean a nulla sit amet magna ullamcorper condimentum. Fusce eu velit vitae libero varius condimentum at sed dui.
+
+In non leo tincidunt, tristique orci eu, suscipit ex. Fusce non lectus ut dolor tincidunt fermentum. Donec dictum mauris magna, ut dictum nisl finibus quis. Nulla elementum ipsum ut lectus sodales finibus. Nulla ac malesuada magna. Etiam arcu dolor, luctus eget elit a, volutpat vulputate mi. Donec elementum tellus libero, ut ornare orci dignissim lacinia. Nullam iaculis vehicula sem, at tempor tellus. Praesent eu nisi a elit viverra lobortis. Nullam eu metus et justo molestie posuere vitae imperdiet erat. Praesent at gravida dui. Vivamus mauris odio, efficitur eget lacus quis, mattis tristique risus. Mauris quis metus sed risus lobortis sollicitudin vitae vitae quam. Morbi leo turpis, aliquam at nunc sit amet, ultricies dictum lorem. Nam et fringilla elit. Vestibulum auctor, turpis ut facilisis tempor, arcu nibh tincidunt libero, quis blandit leo turpis a urna.
+
+\section{Code Listings}
+In my line of work, code listings is a significant part of any document. Obviously this is an integrated part of this document framework. To include a codeblock you can do as in listing \ref{listing:Sample-inline-listing} where you simply type the code you want to feature. The code in listing \ref{listing:Sample-inline-listing} woiuld return in the listing in 
+\begin{lstlisting}[language=Tex, caption={An example of inline listing}, label=listing:Sample-inline-listing]
+\begin{lstlisting}[language=c, caption={Hello world in C}, label=lst:hello-world-c]
+#include <stdio.h>
+int main(int argc, char *argv[])
+{
+  printf("Hello, hilly world.\n");
+  return 0;
+}
+\end{lstlistin} % <-- Should have been end{lstlisting}, but that I could not figure out.	
+\end{lstlisting}
+
+\begin{lstlisting}[language=c, caption={Hello world in C}, label=lst:hello-world-c]
+#include <stdio.h>
+int main(int argc, char *argv[])
+{
+  printf("Hello, hilly world.\n");
+  return 0;
+}
+\end{lstlisting}
+
+Of course you can also include code code directly. 
+
+\code{ \textbackslash lstlistoflistings } creates an index of listings.
+See  \url{https://www.overleaf.com/learn/latex/Code\_listing}
+
+\section{More Fill}
+
+Nam ante risus, tempor nec lacus ac, congue pretium dui. Donec a nisl est. Integer accumsan mauris eu ex venenatis mollis. Aliquam sit amet ipsum laoreet, mollis sem sit amet, pellentesque quam. Aenean auctor diam eget erat venenatis laoreet. In ipsum felis, tristique eu efficitur at, maximus ac urna. Aenean pulvinar eu lorem eget suscipit. Aliquam et lorem erat. Nam fringilla ante risus, eget convallis nunc pellentesque non. Donec ipsum nisl, consectetur in magna eu, hendrerit pulvinar orci. Mauris porta convallis neque, non viverra urna pulvinar ac. Cras non condimentum lectus. Aliquam odio leo, aliquet vitae tellus nec, imperdiet lacinia turpis. Nam ac lectus imperdiet, luctus nibh a, feugiat urna.
+
+\begin{itemize}
+	\item Pellentesque non
+	\item Aliquet vitae tellus nec
+	\item  Cras non condimentum 
+\end{itemize}
+
+Nunc egestas quis leo sed efficitur. Donec placerat, dui vel bibendum bibendum, tortor ligula auctor elit, aliquet pulvinar leo ante nec tellus. Praesent at vulputate libero, sit amet elementum magna. Pellentesque sodales odio eu ex interdum molestie. Suspendisse lacinia, augue quis interdum posuere, dolor ipsum euismod turpis, sed viverra nibh velit eget dolor. Curabitur consectetur tempus lacus, sit amet luctus mauris interdum vel. Curabitur vehicula convallis felis, eget mattis justo rhoncus eget. Pellentesque et semper lectus.
+
+\begin{description}
+	\item[Nunc] Curabitur vehicula convallis felis
+	\item[Donec] Donec placerat, dui vel bibendum bibendum
+\end{description}
+
+Donec nec nibh sagittis, finibus mauris quis, laoreet augue. Maecenas aliquam sem nunc, vel semper urna hendrerit nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas pellentesque dolor lacus, sit amet pretium felis vestibulum finibus. Duis tincidunt sapien faucibus nisi vehicula tincidunt. Donec euismod suscipit ligula a tempor. Aenean a nulla sit amet magna ullamcorper condimentum. Fusce eu velit vitae libero varius condimentum at sed dui.
+
+%------------------------------------------------
+
+\subsection{Subsection}
+
+In hac habitasse platea dictumst. Etiam ac tortor fermentum, ultrices libero gravida, blandit metus. Vivamus sed convallis felis. Cras vel tortor sollicitudin, vestibulum nisi at, pretium justo. Curabitur placerat elit nunc, sed luctus ipsum auctor a. Nulla feugiat quam venenatis nulla imperdiet vulputate non faucibus lorem. Curabitur mollis diam non leo ullamcorper lacinia.
+
+Morbi iaculis posuere arcu, ut scelerisque sem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris placerat urna id enim aliquet, non consequat leo imperdiet. Phasellus at nibh ut tortor hendrerit accumsan. Phasellus sollicitudin luctus sapien, feugiat facilisis risus consectetur eleifend. In quis luctus turpis. Nulla sed tellus libero. Pellentesque metus tortor, convallis at tellus quis, accumsan faucibus nulla. Fusce auctor eleifend volutpat. Maecenas vel faucibus enim. Donec venenatis congue congue. Integer sit amet quam ac est aliquam aliquet. Ut commodo justo sit amet convallis scelerisque.
+
+\begin{enumerate}
+	\item First numbered item in a list
+	\item Second numbered item in a list
+	\item Third numbered item in a list
+\end{enumerate}
+
+Aliquam elementum nulla at arcu finibus aliquet. Praesent congue ultrices nisl pretium posuere. Nunc vel nulla hendrerit, ultrices justo ut, ultrices sapien. Duis ut arcu at nunc pellentesque consectetur. Vestibulum eget nisl porta, ultricies orci eget, efficitur tellus. Maecenas rhoncus purus vel mauris tincidunt, et euismod nibh viverra. Mauris ultrices tellus quis ante lobortis gravida. Duis vulputate viverra erat, eu sollicitudin dui. Proin a iaculis massa. Nam at turpis in sem malesuada rhoncus. Aenean tempor risus dui, et ultrices nulla rutrum ut. Nam commodo fermentum purus, eget mattis odio fringilla at. Etiam congue et ipsum sed feugiat. Morbi euismod ut purus et tempus. Etiam est ligula, aliquam eget porttitor ut, auctor in risus. Curabitur at urna id dui lobortis pellentesque.
+
+\begin{table}
+	\caption{Example table}
+	\centering
+	\begin{tabular}{llr}
+		\toprule
+		\multicolumn{2}{c}{aliquet} \\
+		\cmidrule(r){1-2}
+		Maecenas & Aenean & Praesent \\
+		\midrule
+		Vestibulum & Nam & $7.5$ \\
+		Maecenas & Commodo & $5$ \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+%------------------------------------------------
+
+
+
+\section{Plotting}
+
+In case you need to plot some data or equations, you can keep the plot commands and data in external files, have gnuplot create the plots as a part of the make process and include the result in your \LaTeX source.  The steps are:
+\begin{enumerate}
+	\item Create the gnuplot file with your gnuplot commands. \label{step:create_gnuplot_file}
+	\item Add the gnuplot to the variable \code{GNUPLOTS} in the Makefile. \label{step:add}
+	\item Add code to include the resulting pdf in your \LaTeX source.	 \label{step:add-pdf-to-latex}
+	\item Generate the document. \label{step:generate-document}
+\end{enumerate}
+
+As an example, imagine you want to plot a hilly landscape described equation \ref{eq:hills} and have it look like the plot in figure \ref{fig:hillsplot}, you could do the following. 
+Step \ref{step:create_gnuplot_file}: Create a file on disk containing the gnuplot code in listing  \ref{lst:gnuplot-hills} and save it as \filename{hills.gnuplot}.
+
+\begin{equation}
+e^{\left(    \frac{ -\left (  \left( x - 4  \right)^2 + \left( y-4\right)^2 \right )^2 }{1000} \right)}
++
+e^{\left(    \frac{ -\left (  \left( x + 4  \right)^2 + \left( y+4\right)^2 \right )^2 }{1000} \right)}
++
+0.1  e^{\left(     -\left (  \left( x + 4  \right)^2 + \left( y+4\right)^2 \right )^2 \right)}
++
+0.1  e^{\left(     -\left (  \left( x - 4  \right)^2 + \left( y- 4\right)^2 \right )^2 \right)}
+\label{eq:hills}
+\end{equation}
+
+
+\begin{lstlisting}[language=Gnuplot, caption={Gnuplot code for plotting a hilly landscape.}, label=lst:gnuplot-hills]
+set terminal pdf
+
+f(x,y) = exp(-((x-4)**2+(y-4)**2)**2/1000)    \
+		+ exp(-((x +4)**2+(y+4)**2)**2/1000)  \
+		+ 0.1 * exp(-((x +4)**2+(y+4)**2)**2) \
+		+ 0.1 * exp(-((x -4)**2+(y-4)**2)**2)
+
+unset colorbox
+set pm3d
+set hidden3d
+set isosamples 100
+set zrange [0:1.2]
+set format x ""
+set format y ""
+set format z ""
+unset xtics
+unset ytics
+unset ztics
+
+splot f(x,y) with pm3d notitle
+\end{lstlisting}
+
+Step \ref{step:add}: Add the \filename{hills.gnuplot} file to the \filename{Makefile}. Note that there is already a rule defined for generating PDFs, so you need to add the complete name of your file.
+\begin{lstlisting}[language=make, caption={Adding a new gnuplot file to the Makefile.}, label=lst:add-gnuplot-to-makefile]
+GNUPLOTS = hills.gnuplot.pdf
+\end{lstlisting}
+
+Step \ref{step:add-pdf-to-latex} wil be to include the PDF file in the latex code. This could be done like in listing 
+
+\begin{lstlisting}[language=TeX, caption={Indlucind a PDF as a figure}, label=lst:include-pdf-as-figure]
+\begin{figure*}
+	\includegraphics[width=\linewidth]{parabellum.gnuplot.pdf} 
+	\caption{A plot of equation \ref{eq:hills} } 
+	\label{fig:hillsplot}
+\end{figure*}
+\end{lstlisting}
+
+Step \ref{step:generate-document} is to run \code{make current} to generate the resulting PDF of the document. The result should then look like figure \ref{fig:hillsplot}
+
+\begin{figure*}
+	\includegraphics[width=\linewidth]{parabellum.gnuplot.pdf} 
+	\caption{A plot of equation \ref{eq:hills} } 
+	\label{fig:hillsplot}
+\end{figure*}
+
+\section{More Latin Text}
+
+In hac habitasse platea dictumst. Vivamus eu finibus leo. Donec malesuada dui non sagittis auctor. Aenean condimentum eros metus. Nunc tempus id velit ut tempus. Quisque fermentum, nisl sit amet consectetur ornare, nunc leo luctus leo, vitae mattis odio augue id libero. Mauris quis lectus at ante scelerisque sollicitudin in eu nisi. Nulla elit lacus, ultricies eu erat congue, venenatis semper turpis. Ut nec venenatis velit. Mauris lacinia diam diam, ac egestas neque sodales sed. Curabitur eu diam nulla. Duis nec turpis finibus, commodo diam sed, bibendum erat. Nunc in velit ullamcorper, posuere libero a, mollis mauris. Nulla vehicula quam id tortor ornare blandit. Aenean maximus tempor orci ultrices placerat. Aenean condimentum magna vulputate erat mattis feugiat.
+
+Quisque lacinia, purus id mattis gravida, sem enim fringilla erat, non dapibus est tellus pellentesque velit. Vivamus pretium sem quis leo placerat, at dignissim ex iaculis. Donec neque tortor, pharetra quis vestibulum id, tempus scelerisque mi. Cras in mattis est. Integer nec lorem rutrum, semper ligula bibendum, iaculis neque. Sed in nunc placerat, viverra dui in, fringilla sem. Sed quis rutrum magna, vitae pellentesque eros.
+
+Praesent maximus mauris vitae nisl pulvinar, at tristique tortor aliquam. Etiam sit amet nunc in nulla vulputate sollicitudin. Aliquam erat volutpat. Praesent pharetra gravida cursus. Quisque vulputate lacus nunc. Integer orci ex, porttitor quis sapien id, eleifend gravida mi. Etiam efficitur justo eget nulla congue mattis. Duis commodo vel arcu a pretium. Aenean eleifend viverra nisl, nec ornare lacus rutrum in.
+
+
+Vivamus pulvinar ac eros eu pellentesque. Duis nibh felis, sagittis sed lacus at, sagittis mattis nisi. Fusce ante dui, tincidunt in scelerisque ut, sagittis at magna. Fusce tincidunt felis et odio tincidunt imperdiet. Cras ut facilisis nisl. Aliquam vitae consequat metus, eget gravida augue. In imperdiet justo quis nulla venenatis accumsan. Aliquam aliquet consectetur tortor, at sollicitudin sapien porta sed. Donec efficitur mauris id rhoncus volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed bibendum purus dapibus tincidunt euismod. Nullam malesuada ultrices lacus, ut tincidunt dolor. Etiam imperdiet quam eget elit tincidunt scelerisque. Curabitur ut ullamcorper dui. Cras gravida porta leo, ut lobortis nisl venenatis pulvinar. Proin non semper nulla.
+
+Praesent pretium nisl purus, id mollis nibh efficitur sed. Sed sit amet urna leo. Nulla sed imperdiet sem. Donec ut diam tristique, faucibus ligula vel, varius est. In ipsum ligula, elementum vitae velit ac, viverra tincidunt enim. Phasellus gravida diam id nisl interdum maximus. Ut semper, tortor vitae congue pharetra, justo odio commodo urna, vel tempus libero ex et risus. Vivamus commodo felis non venenatis rutrum. Sed pulvinar scelerisque augue in porta. Sed maximus libero nec tellus malesuada elementum. Proin non augue posuere, pellentesque felis viverra, varius urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim urna eget diam dictum, eget facilisis libero pulvinar.
+
+Aliquam ex tellus, hendrerit sed odio sit amet, facilisis elementum enim. Suspendisse potenti. Integer molestie ac augue sit amet fermentum. Vivamus ultrices ante nulla, vitae venenatis ipsum ullamcorper sed. Phasellus gravida felis sapien, ac porta purus pharetra quis. Sed eget augue tellus. Nam vitae hendrerit arcu, id iaculis ipsum. Pellentesque sed magna tortor.
+
+In ac tempus diam. Sed nec lobortis massa, suscipit accumsan justo. Quisque porttitor, ligula a semper euismod, urna diam dictum sem, sed maximus risus purus sit amet felis. Fusce elementum maximus nisi a mattis. Nulla vitae elit erat. Integer sit amet commodo risus, eget elementum nulla. Donec ultricies erat sit amet sem commodo iaculis. Donec euismod volutpat lacus, ut tempor est lacinia a. Vivamus auctor condimentum tincidunt. Praesent sed finibus urna. Sed pellentesque blandit magna et rhoncus.
+
+Integer vel turpis nec tellus sodales malesuada a vel odio. Fusce et lectus eu nibh rhoncus tempus vel nec elit. Suspendisse commodo orci velit, lacinia dictum odio accumsan et. Vivamus libero dui, elementum vel nibh non, fermentum venenatis risus. Aliquam sed sapien ac orci sodales tempus a eget dui. Morbi non dictum tortor, quis tincidunt nibh. Proin ut tincidunt odio.
+
+Pellentesque ac nisi dolor. Pellentesque maximus est arcu, eu scelerisque est rutrum vitae. Mauris ullamcorper vulputate vehicula. Praesent fermentum leo ac velit accumsan consectetur. Aliquam eleifend ex eros, ut lacinia tellus volutpat non. Pellentesque sit amet cursus diam. Maecenas elementum mattis est, in tincidunt ex pretium ac. Integer ultrices nunc rutrum, pretium sapien vitae, lobortis velit.
+
+\appendix
+
+\section{Document history} \label{sec:document-history}
+
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\printbibliography[title={Bibliography}] % Print the bibliography, section title in curly brackets
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

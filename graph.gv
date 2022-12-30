@@ -1,0 +1,52 @@
+digraph vert
+{
+margin=0 # in inches
+
+  
+  node [
+	fontname = "Handlee"
+	shape = rect;
+  ];
+  edge [
+	fontname = "Handlee";
+	 weight=100 
+  ];
+
+  Start [
+    label = "Start document";
+  ];
+
+  MakeChanges [
+    label = "Add changes to document\n'make current'";
+  ];
+  
+  CommitChanges [
+     label = "Commit changes to git";
+];
+  
+  IsReadyForRelease [
+	 label="Is document\nready for\nrelease?"
+     shape = diamond;
+  ]
+  
+  TagRevision [
+     label = "Tag revision as rn\n'git tag r003'"
+  ]
+
+  Release [
+     label = "Generate releases\n'make releases'"
+  ]
+  
+  Publish [
+	label = "Publish PDFs"
+  ]
+  Start:s -> MakeChanges:n
+  MakeChanges:s -> CommitChanges:n
+  CommitChanges:s -> IsReadyForRelease:n
+  IsReadyForRelease:e -> MakeChanges:e [label="No"]
+  IsReadyForRelease:s -> TagRevision:n [label="Yes"]
+  TagRevision:s -> Release:n
+  Release:s -> Publish:n
+  Publish:w -> MakeChanges:w
+  
+ }
